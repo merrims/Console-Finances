@@ -140,3 +140,8 @@ var greatestMonth = financesObject[greatestIndex +1].Month;
 console.log('Greatest Increase in Profits: ' + greatestMonth + ' (£' + greatestIncrease + ')');
 
 //The greatest decrease in losses (date and amount) over the entire period.
+var greatestDecrease = Math.min(...changes);
+var greatestIndexDecrease = changes.indexOf(greatestDecrease);
+var greatestMonthDecrease = financesObject[greatestIndexDecrease +1].Month;
+
+console.log('Greatest Decrease in Profits: ' + greatestMonthDecrease + ' (£' + greatestDecrease + ')');
