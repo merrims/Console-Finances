@@ -1,4 +1,5 @@
 var finances = [
+['Month', 'Total'],
 ['Jan-2010', 867884],
 ['Feb-2010', 984655],
 ['Mar-2010', 322013],
@@ -86,3 +87,56 @@ var finances = [
 ['Jan-2017', 138230],
 ['Feb-2017', 671099]
 ];
+
+//Convert array to object with key-value pairs
+//Code inspiration from: https://stackoverflow.com/questions/62196750/convert-array-of-arrays-to-key-value-pairs-using-plain-javascript-or-jquery
+var titles = finances[0];
+
+var financesObject = finances.slice(1).map(
+  finances => Object.fromEntries(
+    titles.map( 
+      (t, i) => [t, finances[i]] 
+    )
+  )
+);
+
+// var totals = financesObject.Total;
+
+//The total number of months included in the dataset.
+var numberOfMonths = financesObject.length;
+console.log('Total Months: ' + numberOfMonths);
+
+//The net total amount of Profit/Losses over the entire period.
+var netTotal = 0;
+
+for (i = 0; i < financesObject.length; i++) {
+    var sum = parseFloat(financesObject[i].Total);
+    netTotal += sum;
+}
+
+console.log('Total: £' + netTotal);
+
+//The average of the changes in Profit/Losses over the entire period.
+var changes = [];
+for (var i=0; i < financesObject.length -1; i++) {
+    var diff = (financesObject[i+1].Total - financesObject[i].Total);
+    changes.push(diff);
+}
+
+var totalChanges = 0;
+for (var i=0; i < changes.length; i++) {
+    var sum = parseFloat(changes[i]);
+    totalChanges += sum
+}
+
+var average = parseFloat((totalChanges / (numberOfMonths - 1)) || 0).toFixed(2);
+console.log('Average change: £' + average);
+
+//The greatest increase in profits (date and amount) over the entire period.
+var greatestIncrease = Math.max(...changes);
+var greatestIndex = changes.indexOf(greatestIncrease);
+var greatestMonth = financesObject[greatestIndex +1].Month;
+
+console.log('Greatest Increase in Profits: ' + greatestMonth + ' (£' + greatestIncrease + ')');
+
+//The greatest decrease in losses (date and amount) over the entire period.
